@@ -3,485 +3,912 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CryptoEdge — Institutional Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<meta name="description" content="CryptoEdge — Institutional Crypto Market Terminal">
+<meta name="color-scheme" content="dark">
+<title>CryptoEdge — Market Terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0d0d12;
-  --surface:#13131a;
-  --surface-2:#1a1a24;
-  --border:rgba(255,255,255,0.06);
-  --border-bright:rgba(255,255,255,0.12);
-  --accent:#6366f1;
-  --accent-glow:rgba(99,102,241,0.15);
-  --green:#22c55e;
-  --red:#ef4444;
-  --amber:#f59e0b;
-  --cyan:#06b6d4;
-  --text:rgba(255,255,255,0.92);
-  --text-2:rgba(255,255,255,0.55);
-  --text-3:rgba(255,255,255,0.25);
-}
-body{
-  background:radial-gradient(ellipse at 30% 0%,rgba(99,102,241,0.06) 0%,transparent 60%),var(--bg);
-  color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:13px;
-  min-height:100vh;-webkit-font-smoothing:antialiased;
-}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.14)}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* HEADER */
-.header{
-  position:fixed;top:0;left:0;right:0;height:56px;
-  background:rgba(13,13,18,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:100;
-}
-.header-left{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px;color:var(--text);letter-spacing:-0.01em}
-.header-left .dot{width:8px;height:8px;background:var(--accent);border-radius:50%;flex-shrink:0}
-.header-center{display:flex;gap:6px;align-items:center}
-.price-pill{
-  display:flex;align-items:center;gap:8px;
-  background:var(--surface);border:1px solid var(--border);border-radius:8px;
-  padding:6px 12px;font-size:12px;transition:border-color 0.2s;
-}
-.price-pill:hover{border-color:var(--border-bright)}
-.price-pill .label{color:var(--text-3);font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:0.05em}
-.price-pill .val{font-family:'DM Mono',monospace;font-weight:500;color:var(--text)}
-.header-right{display:flex;align-items:center;gap:14px;font-size:12px;color:var(--text-2)}
-.live-indicator{display:flex;align-items:center;gap:6px}
-.live-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 2s ease-in-out infinite;box-shadow:0 0 8px rgba(34,197,94,0.4)}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.5)}}
-.live-text{font-weight:500;font-size:11px;color:var(--green);letter-spacing:0.04em}
-.clock{font-family:'DM Mono',monospace;font-size:12px;color:var(--text-2);font-weight:400}
+:root {
+  --bg: #020408;
+  --s1: #060a12;
+  --s2: rgba(255,255,255,0.04);
+  --s3: rgba(255,255,255,0.06);
+  --s4: rgba(255,255,255,0.08);
 
-/* DISCONNECT BANNER */
-.banner{
-  background:rgba(239,68,68,0.08);border-bottom:1px solid rgba(239,68,68,0.2);color:var(--red);
-  text-align:center;padding:8px;font-size:12px;font-weight:500;
-  position:fixed;top:56px;left:0;right:0;z-index:99;
+  --blue: #3b82f6;
+  --blue-dim: rgba(59,130,246,0.10);
+  --blue-glow: rgba(59,130,246,0.25);
+  --violet: #8b5cf6;
+  --violet-dim: rgba(139,92,246,0.10);
+  --emerald: #10b981;
+  --emerald-dim: rgba(16,185,129,0.10);
+  --coral: #ef4444;
+  --coral-dim: rgba(239,68,68,0.10);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245,158,11,0.10);
+
+  --t1: #f0f0f8;
+  --t2: #94a3b8;
+  --t3: #64748b;
+  --t4: #475569;
+
+  --b1: rgba(255,255,255,0.05);
+  --b2: rgba(255,255,255,0.08);
+  --b3: rgba(255,255,255,0.14);
+
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+
+  --r: 12px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* MAIN */
-.main{padding:72px 24px 32px;max-width:1440px;margin:0 auto}
-
-/* STAT CARDS */
-.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
-.stat-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:12px;
-  padding:18px 20px;transition:all 0.25s ease;
-}
-.stat-card:hover{border-color:var(--border-bright);background:var(--surface-2)}
-.stat-label{color:var(--text-3);font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px}
-.stat-value{font-family:'DM Mono',monospace;font-size:24px;font-weight:500;line-height:1;margin-bottom:6px;color:var(--text)}
-.stat-sub{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-2)}
-.positive{color:var(--green)}.negative{color:var(--red)}.neutral{color:var(--amber)}
-.flash{animation:flash-accent 0.5s ease}
-@keyframes flash-accent{0%{color:#fff}40%{color:var(--accent)}100%{}}
-
-/* PANELS */
-.panels-row{display:grid;grid-template-columns:55% 1fr;gap:12px;margin-bottom:16px}
-.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.25s}
-.panel:hover{border-color:var(--border-bright)}
-.panel-header{
-  padding:14px 20px;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;
-  color:var(--text-2);display:flex;justify-content:space-between;align-items:center;
-  border-bottom:1px solid var(--border);
-}
-.panel-header .updated{color:var(--text-3);font-weight:400;font-size:10px;letter-spacing:0.03em;text-transform:none}
-
-/* TABLE */
-.data-table{width:100%;border-collapse:collapse}
-.data-table th{
-  text-align:left;padding:10px 20px;font-size:10px;letter-spacing:0.06em;
-  color:var(--text-3);font-weight:500;text-transform:uppercase;
-}
-.data-table td{
-  padding:10px 20px;font-size:12px;font-family:'DM Mono',monospace;
-  border-top:1px solid var(--border);color:var(--text-2);
-}
-.data-table tr:hover td{background:rgba(99,102,241,0.03)}
-.ex-ref td{color:var(--text-3)}
-.ex-ref td:first-child{color:var(--text-2)}
-.ex-premium td:nth-child(3),.ex-premium td:nth-child(4){color:var(--green)}
-.ex-discount td:nth-child(3),.ex-discount td:nth-child(4){color:var(--red)}
-.data-table td:first-child{color:var(--text);font-family:'Inter',sans-serif;font-weight:500}
-.panel-footer{
-  border-top:1px solid var(--border);padding:12px 20px;font-size:11px;color:var(--text-3);
-  font-family:'DM Mono',monospace;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
-/* CHART */
-.chart-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden;transition:border-color 0.25s}
-.chart-panel:hover{border-color:var(--border-bright)}
-.chart-wrapper{height:200px;padding:16px 20px 12px}
-
-/* BOTTOM ROW */
-.bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-
-/* SIGNAL MATRIX */
-.signal-row{
-  display:grid;grid-template-columns:1fr 1fr auto;gap:0;
-  border-top:1px solid var(--border);padding:10px 20px;align-items:center;
-  transition:background 0.15s;
-}
-.signal-row:first-child{border-top:none}
-.signal-row:hover{background:rgba(99,102,241,0.03)}
-.signal-name{font-size:12px;color:var(--text-2);font-weight:400}
-.signal-value{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--text)}
-.signal-badge{
-  font-size:10px;font-weight:500;letter-spacing:0.03em;
-  padding:3px 10px;border-radius:6px;text-align:center;
-}
-.badge-green{color:var(--green);background:rgba(34,197,94,0.1)}
-.badge-amber{color:var(--amber);background:rgba(245,158,11,0.1)}
-.badge-red{color:var(--red);background:rgba(239,68,68,0.1)}
-
-/* INFO PANEL */
-.info-body{padding:20px;font-size:12px;line-height:2;color:var(--text-2)}
-.info-body .info-key{color:var(--text-3);display:inline-block;width:110px;font-size:11px;font-weight:500;letter-spacing:0.02em}
-.info-body .info-val{color:var(--text);font-weight:400}
-.info-divider{border:none;border-top:1px solid var(--border);margin:14px 0}
-.info-body p{margin-bottom:4px}
-.info-body .methodology{
-  color:var(--text-2);font-size:12px;line-height:1.7;padding-left:110px;margin-top:-2px;
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--t1);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* FOOTER CREDIT */
-.footer-credit{
-  text-align:center;padding:32px 0 16px;font-size:11px;color:var(--text-3);
-}
-.footer-credit a{color:var(--accent);text-decoration:none;font-weight:500}
-.footer-credit a:hover{text-decoration:underline}
-
-/* ANIMATIONS */
-.card{opacity:0;transform:translateY(12px);transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.6s cubic-bezier(0.16,1,0.3,1)}
-.card.visible{opacity:1;transform:translateY(0)}
-
-/* RESPONSIVE */
-@media(max-width:1024px){
-  .stats-row{grid-template-columns:repeat(3,1fr)}
-  .panels-row,.bottom-row{grid-template-columns:1fr}
-  .header-center{display:none}
-}
-@media(max-width:640px){
-  .stats-row{grid-template-columns:repeat(2,1fr)}
-  .main{padding:64px 12px 24px}
-  .header{padding:0 12px}
+/* ═══ ANIMATED GRADIENT BLOB ═══ */
+.bg-blob {
+  position: fixed;
+  top: -20%; right: -10%;
+  width: 700px; height: 700px;
+  background: radial-gradient(ellipse, rgba(59,130,246,0.08) 0%, rgba(139,92,246,0.04) 40%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: blobFloat 20s ease-in-out infinite;
 }
 
-/* REDUCED MOTION */
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important}
+@keyframes blobFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-30px, 20px) scale(1.05); }
+  66% { transform: translate(20px, -15px) scale(0.95); }
+}
+
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
+
+/* ═══ BANNER ═══ */
+#banner {
+  background: linear-gradient(90deg, rgba(239,68,68,0.15), rgba(239,68,68,0.08));
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: 8px;
+  padding: 12px 20px;
+  margin: 0 32px 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--coral);
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+/* ═══ LAYOUT ═══ */
+.shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 32px 48px;
+}
+
+/* ═══ HEADER ═══ */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0 20px;
+  border-bottom: 1px solid var(--b1);
+  margin-bottom: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--blue), var(--violet));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 14px;
+  color: white;
+  box-shadow: 0 0 24px rgba(59,130,246,0.3);
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.12em;
+  color: var(--t1);
+}
+
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--t3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--s2);
+  border: 1px solid var(--b2);
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--t2);
+  backdrop-filter: blur(12px);
+}
+
+.header-pill .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--emerald);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.header-pill .lbl {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--t3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ═══ TICKER STRIP ═══ */
+.ticker-wrap {
+  overflow: hidden;
+  border-top: 1px solid var(--b1);
+  border-bottom: 1px solid var(--b1);
+  padding: 10px 0;
+  margin-bottom: 24px;
+  position: relative;
+}
+.ticker-wrap::before,
+.ticker-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 60px;
+  z-index: 2;
+  pointer-events: none;
+}
+.ticker-wrap::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+.ticker-wrap::after { right: 0; background: linear-gradient(270deg, var(--bg), transparent); }
+
+.ticker-track {
+  display: flex;
+  gap: 48px;
+  animation: tickerScroll 30s linear infinite;
+  width: max-content;
+}
+
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--t2);
+}
+
+.ticker-item .ex { color: var(--t3); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; }
+.ticker-item .pr { color: var(--t1); font-weight: 500; }
+
+/* ═══ KPI ROW ═══ */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+/* ═══ CARDS ═══ */
+.card {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease), box-shadow 300ms, border-color 300ms;
+  background: var(--s2);
+  border: 1px solid var(--b2);
+  border-radius: var(--r);
+  backdrop-filter: blur(16px);
+  overflow: hidden;
+  position: relative;
+}
+
+.card.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.card:hover {
+  border-color: var(--b3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(59,130,246,0.08);
+}
+
+/* Gradient top accent bar */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--violet));
+  opacity: 0;
+  transition: opacity 300ms;
+}
+.card:hover::before { opacity: 1; }
+
+/* KPI Card internals */
+.kpi-card { padding: 22px 20px; }
+
+.kpi-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--t3);
+  margin-bottom: 10px;
+}
+
+.kpi-value {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--t1);
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--t3);
+  margin-top: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Change pill within KPI */
+.change-up { color: var(--emerald); }
+.change-down { color: var(--coral); }
+
+/* ═══ MID PANELS (2-up) ═══ */
+.mid-row {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+/* Panel header */
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--b1);
+}
+
+.panel-title {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--t2);
+}
+
+.panel-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--t3);
+}
+
+.panel-body { padding: 16px 20px; }
+.panel-footer {
+  padding: 10px 20px;
+  border-top: 1px solid var(--b1);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--t3);
+}
+
+/* ═══ DATA TABLE ═══ */
+.dtable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dtable th {
+  text-align: left;
+  padding: 8px 12px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--t4);
+  border-bottom: 1px solid var(--b1);
+}
+.dtable th:last-child, .dtable td:last-child { text-align: right; }
+
+.dtable td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--b1);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--t2);
+  font-variant-numeric: tabular-nums;
+}
+
+.dtable tbody tr { transition: background 200ms; }
+.dtable tbody tr:hover td { background: rgba(59,130,246,0.03); }
+.dtable tbody tr:last-child td { border-bottom: none; }
+
+.dtable .ex-name {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--t1);
+  font-size: 13px;
+}
+
+/* ═══ CHART SECTION ═══ */
+.chart-section {
+  margin-bottom: 20px;
+}
+
+.chart-wrap {
+  padding: 16px 20px 20px;
+}
+
+.chart-wrap canvas {
+  border-radius: 8px;
+}
+
+/* ═══ SIGNALS ═══ */
+.signals-section {
+  margin-bottom: 20px;
+}
+
+.signal-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--b1);
+  transition: background 200ms;
+}
+.signal-row:last-child { border-bottom: none; }
+.signal-row:hover { background: rgba(59,130,246,0.02); }
+
+.signal-name {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--t2);
+  letter-spacing: 0.04em;
+}
+
+.signal-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: right;
+}
+
+.signal-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--t1);
+  font-variant-numeric: tabular-nums;
+}
+
+.signal-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+.pill-green { background: var(--emerald-dim); color: var(--emerald); border: 1px solid rgba(16,185,129,0.2); }
+.pill-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+.pill-red { background: var(--coral-dim); color: var(--coral); border: 1px solid rgba(239,68,68,0.2); }
+
+/* ═══ CLOCK ═══ */
+#clock {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--t3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══ GRAIN OVERLAY ═══ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.015;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ═══ FNG BAR ═══ */
+.fng-bar-wrap {
+  margin-top: 10px;
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.fng-bar {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 800ms var(--ease), background 800ms;
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 1200px) {
+  .kpi-row { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 900px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .mid-row { grid-template-columns: 1fr; }
+  .shell { padding: 0 16px 48px; }
+}
+@media (max-width: 600px) {
+  .kpi-row { grid-template-columns: 1fr; }
+  .header { flex-direction: column; gap: 12px; align-items: flex-start; }
 }
 </style>
 </head>
 <body>
 
-<div id="banner" style="display:none" class="banner">Connection interrupted — reconnecting...</div>
+<div class="bg-blob"></div>
 
-<header class="header">
-  <div class="header-left"><span class="dot"></span>CryptoEdge</div>
-  <div class="header-center">
-    <div class="price-pill"><span class="label">BTC</span><span class="val" id="h-btc">—</span></div>
-    <div class="price-pill"><span class="label">ETH</span><span class="val" id="h-eth">—</span></div>
-    <div class="price-pill"><span class="label">F&G</span><span class="val" id="h-fng">—</span></div>
-  </div>
-  <div class="header-right">
-    <div class="live-indicator">
-      <div class="live-dot"></div>
-      <span class="live-text">LIVE</span>
-    </div>
-    <span class="clock" id="clock">--:--:--</span>
-  </div>
-</header>
+<div class="shell">
 
-<main class="main">
+  <!-- BANNER (hidden by default, shown on connection failure) -->
+  <div id="banner" style="display:none">CONNECTION LOST — Attempting to reconnect...</div>
 
-  <!-- STAT CARDS -->
-  <div class="stats-row">
-    <div class="stat-card card" id="c-btc">
-      <div class="stat-label">Bitcoin</div>
-      <div class="stat-value" id="btc-price">—</div>
-      <div class="stat-sub" id="btc-change">24h: —</div>
-    </div>
-    <div class="stat-card card" id="c-eth">
-      <div class="stat-label">Ethereum</div>
-      <div class="stat-value" id="eth-price">—</div>
-      <div class="stat-sub" id="eth-change">24h: —</div>
-    </div>
-    <div class="stat-card card" id="c-fng">
-      <div class="stat-label">Fear & Greed</div>
-      <div class="stat-value" id="fng-value">—</div>
-      <div class="stat-sub" id="fng-label">—</div>
-    </div>
-    <div class="stat-card card" id="c-dom">
-      <div class="stat-label">BTC Dominance</div>
-      <div class="stat-value" id="btc-dom">—</div>
-      <div class="stat-sub">of global mcap</div>
-    </div>
-    <div class="stat-card card" id="c-mcap">
-      <div class="stat-label">Global Market Cap</div>
-      <div class="stat-value" id="global-mcap">—</div>
-      <div class="stat-sub">total crypto</div>
-    </div>
-  </div>
-
-  <!-- SPREADS + FUNDING -->
-  <div class="panels-row">
-    <div class="panel card">
-      <div class="panel-header">
-        Cross-Exchange Arbitrage
-        <span class="updated" id="spread-updated">Updating...</span>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="brand">
+      <div class="brand-icon">CE</div>
+      <div>
+        <div class="brand-name">CRYPTOEDGE</div>
+        <div class="brand-sub">Market Terminal</div>
       </div>
-      <table class="data-table">
-        <thead><tr>
-          <th>Exchange</th><th>BTC Price</th><th>vs Ref</th><th>Spread %</th><th>Status</th>
-        </tr></thead>
-        <tbody id="spread-table"></tbody>
-      </table>
-      <div class="panel-footer" id="spread-footer">Max spread: — · Efficiency: —</div>
     </div>
-    <div class="panel card">
-      <div class="panel-header">Perpetual Funding Rates</div>
-      <table class="data-table">
-        <thead><tr>
-          <th>Exchange</th><th>8h Rate</th><th>Annualized</th><th>Signal</th>
-        </tr></thead>
-        <tbody id="funding-table"></tbody>
-      </table>
-      <div class="panel-footer" id="funding-footer">Consensus: —</div>
+    <div class="header-right">
+      <div class="header-pill" id="h-btc">
+        <span class="lbl">BTC</span>
+        <span class="pr" id="h-btc-val">—</span>
+      </div>
+      <div class="header-pill" id="h-eth">
+        <span class="lbl">ETH</span>
+        <span class="pr" id="h-eth-val">—</span>
+      </div>
+      <div class="header-pill" id="h-fng">
+        <span class="lbl">F&G</span>
+        <span class="pr" id="h-fng-val">—</span>
+      </div>
+      <div class="header-pill">
+        <span class="dot"></span>
+        <span>LIVE</span>
+      </div>
+      <div id="clock">--:--:--</div>
+    </div>
+  </header>
+
+  <!-- TICKER STRIP -->
+  <div class="ticker-wrap">
+    <div class="ticker-track" id="ticker-track"></div>
+  </div>
+
+  <!-- KPI ROW (5 cards) -->
+  <div class="kpi-row">
+    <div class="card kpi-card">
+      <div class="kpi-label">Bitcoin</div>
+      <div class="kpi-value" id="btc-price">—</div>
+      <div class="kpi-sub"><span id="btc-change">—</span></div>
+    </div>
+    <div class="card kpi-card">
+      <div class="kpi-label">Ethereum</div>
+      <div class="kpi-value" id="eth-price">—</div>
+      <div class="kpi-sub"><span id="eth-change">—</span></div>
+    </div>
+    <div class="card kpi-card">
+      <div class="kpi-label">Fear & Greed</div>
+      <div class="kpi-value" id="fng-value">—</div>
+      <div class="kpi-sub" id="fng-label">—</div>
+      <div class="fng-bar-wrap"><div class="fng-bar" id="fng-bar"></div></div>
+    </div>
+    <div class="card kpi-card">
+      <div class="kpi-label">BTC Dominance</div>
+      <div class="kpi-value" id="btc-dom">—</div>
+      <div class="kpi-sub">market share</div>
+    </div>
+    <div class="card kpi-card">
+      <div class="kpi-label">Global Market Cap</div>
+      <div class="kpi-value" id="global-mcap">—</div>
+      <div class="kpi-sub">trillion USD</div>
+    </div>
+  </div>
+
+  <!-- MID ROW: Spreads + Funding -->
+  <div class="mid-row">
+    <!-- Spread Panel -->
+    <div class="card">
+      <div class="panel-head">
+        <span class="panel-title">Exchange Spreads — BTC</span>
+        <span class="panel-badge" id="spread-updated">—</span>
+      </div>
+      <div class="panel-body" style="padding:0;">
+        <table class="dtable" id="spread-table">
+          <thead>
+            <tr>
+              <th>Exchange</th>
+              <th>Price</th>
+              <th>Diff ($)</th>
+              <th>Diff (%)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="panel-footer" id="spread-footer">Max spread: — | Efficiency: —</div>
+    </div>
+
+    <!-- Funding Panel -->
+    <div class="card">
+      <div class="panel-head">
+        <span class="panel-title">Funding Rates</span>
+        <span class="panel-badge">BTC Perps</span>
+      </div>
+      <div class="panel-body" style="padding:0;">
+        <table class="dtable" id="funding-table">
+          <thead>
+            <tr>
+              <th>Exchange</th>
+              <th>8h Rate</th>
+              <th>Annualized</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="panel-footer" id="funding-footer">—</div>
     </div>
   </div>
 
   <!-- CHART -->
-  <div class="chart-panel card">
-    <div class="panel-header">
-      BTC Cross-Exchange Spread %
-      <span class="updated">Amber line = 0.1% threshold</span>
-    </div>
-    <div class="chart-wrapper">
-      <canvas id="spreadChart"></canvas>
-    </div>
-  </div>
-
-  <!-- SIGNALS + INFO -->
-  <div class="bottom-row">
-    <div class="panel card">
-      <div class="panel-header">Signal Matrix</div>
-      <div id="signals-body"></div>
-    </div>
-    <div class="panel card">
-      <div class="panel-header">System Info</div>
-      <div class="info-body">
-        <p><span class="info-key">Platform</span><span class="info-val">CryptoEdge v2.0</span></p>
-        <p><span class="info-key">Refresh</span><span class="info-val">5 seconds</span></p>
-        <p><span class="info-key">Exchanges</span><span class="info-val">Binance · Coinbase · Kraken · OKX</span></p>
-        <p><span class="info-key">Derivatives</span><span class="info-val">Binance Perp · Bybit Perp</span></p>
-        <p><span class="info-key">Sentiment</span><span class="info-val">Alternative.me F&G Index</span></p>
-        <hr class="info-divider">
-        <p><span class="info-key">Methodology</span></p>
-        <p class="methodology">Cross-exchange spread measures price efficiency across venues. Funding rates reveal crowded positioning. High funding + low spread = longs crowded in an efficient market — contrarian bearish signal.</p>
-        <hr class="info-divider">
-        <p><span class="info-key">Built by</span><span class="info-val">Raphaël Anselin</span></p>
-        <p><span class="info-key">School</span><span class="info-val">ESADE Barcelona · BITLASI</span></p>
-        <p><span class="info-key">Contact</span><span class="info-val">raphoc@icloud.com</span></p>
+  <div class="chart-section">
+    <div class="card">
+      <div class="panel-head">
+        <span class="panel-title">Spread History</span>
+        <span class="panel-badge">max spread % over time</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="spreadChart" height="200"></canvas>
       </div>
     </div>
   </div>
 
-</main>
+  <!-- SIGNALS -->
+  <div class="signals-section">
+    <div class="card">
+      <div class="panel-head">
+        <span class="panel-title">Market Signals</span>
+        <span class="panel-badge">quant indicators</span>
+      </div>
+      <div id="signals-body"></div>
+    </div>
+  </div>
+
+</div>
 
 <script>
-// Clock
-(function tick(){
-  const n=new Date();
-  document.getElementById('clock').textContent=
-    n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+' GMT+1';
-  setTimeout(tick,1000);
-})();
-
-// Chart setup
-const spreadData = new Array(60).fill(null);
-const spreadLabels = new Array(60).fill('');
-const ctx = document.getElementById('spreadChart').getContext('2d');
-Chart.defaults.color = 'rgba(255,255,255,0.25)';
-Chart.defaults.font.family = "'DM Mono', monospace";
-const chart = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: spreadLabels,
-    datasets: [{
-      data: spreadData,
-      borderColor: '#6366f1',
-      backgroundColor: 'rgba(99,102,241,0.08)',
-      borderWidth: 1.5,
-      pointRadius: 0,
-      fill: true,
-      tension: 0.35,
-    },{
-      data: new Array(60).fill(0.1),
-      borderColor: 'rgba(245,158,11,0.4)',
-      borderWidth: 1,
-      borderDash: [5,5],
-      pointRadius: 0,
-      fill: false,
-      label: 'threshold',
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {legend:{display:false},tooltip:{
-      backgroundColor:'#1a1a24',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,
-      titleColor:'rgba(255,255,255,0.5)',bodyColor:'rgba(255,255,255,0.9)',
-      titleFont:{family:'Inter'},bodyFont:{family:'DM Mono'},
-      padding:10,cornerRadius:8,displayColors:false,
-      callbacks:{label:c=>`Spread: ${c.parsed.y?.toFixed(4)}%`}
-    }},
-    scales: {
-      x:{grid:{color:'rgba(255,255,255,0.03)',drawBorder:false},ticks:{font:{size:9},maxTicksLimit:8}},
-      y:{grid:{color:'rgba(255,255,255,0.03)',drawBorder:false},ticks:{font:{size:9},callback:v=>v.toFixed(3)+'%'}}
-    }
-  }
-});
-
-// Helpers
-const fmt = (n,d=0) => n==null?'—':Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
-const fmtP = n => (n>=0?'+':'')+n.toFixed(2)+'%';
 const $ = id => document.getElementById(id);
 
-// Polling
-let failCount = 0;
-let prevBtc = 0, prevEth = 0;
+/* ═══ CLOCK ═══ */
+function tickClock() {
+  const now = new Date();
+  $('clock').textContent = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' UTC' + (now.getTimezoneOffset() > 0 ? '-' : '+') + Math.abs(now.getTimezoneOffset() / 60);
+}
+tickClock();
+setInterval(tickClock, 1000);
 
-async function fetchStatus() {
+/* ═══ CARD REVEAL ═══ */
+function revealCards() {
+  const cards = document.querySelectorAll('.card');
+  cards.forEach((card, i) => {
+    setTimeout(() => card.classList.add('visible'), 200 + i * 80);
+  });
+}
+revealCards();
+
+/* ═══ ANIMATED NUMBER ═══ */
+function animateNum(el, target, opts = {}) {
+  if (!el) return;
+  const { prefix = '', suffix = '', decimals = 2, duration = 800 } = opts;
+  const start = parseFloat(el.dataset.current || '0') || 0;
+  const diff = target - start;
+  if (Math.abs(diff) < 0.0001) {
+    el.textContent = prefix + formatNum(target, decimals) + suffix;
+    return;
+  }
+  el.dataset.current = target;
+  const startTime = performance.now();
+  function step(now) {
+    const elapsed = Math.min((now - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - elapsed, 3);
+    const current = start + diff * eased;
+    el.textContent = prefix + formatNum(current, decimals) + suffix;
+    if (elapsed < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function formatNum(n, dec = 2) {
+  return n.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+}
+
+/* ═══ CHART ═══ */
+const spreadHistory = { labels: [], data: [] };
+let spreadChart = null;
+
+function initChart() {
+  const ctx = $('spreadChart').getContext('2d');
+  const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+  gradient.addColorStop(0, 'rgba(59,130,246,0.15)');
+  gradient.addColorStop(1, 'rgba(59,130,246,0)');
+
+  spreadChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: spreadHistory.labels,
+      datasets: [{
+        label: 'Max Spread %',
+        data: spreadHistory.data,
+        borderColor: '#3b82f6',
+        backgroundColor: gradient,
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+        pointRadius: 0,
+        pointHitRadius: 10,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(6,10,18,0.9)',
+          borderColor: 'rgba(59,130,246,0.3)',
+          borderWidth: 1,
+          titleFont: { family: 'DM Mono', size: 11 },
+          bodyFont: { family: 'DM Mono', size: 12 },
+          padding: 10,
+          cornerRadius: 8,
+        }
+      },
+      scales: {
+        x: {
+          display: true,
+          grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false },
+          ticks: { font: { family: 'DM Mono', size: 10 }, color: '#475569', maxTicksLimit: 8 },
+        },
+        y: {
+          display: true,
+          grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false },
+          ticks: { font: { family: 'DM Mono', size: 10 }, color: '#475569', callback: v => v.toFixed(3) + '%' },
+        }
+      },
+      interaction: { intersect: false, mode: 'index' },
+    }
+  });
+}
+initChart();
+
+/* ═══ TICKER STRIP ═══ */
+function buildTicker(spreads) {
+  const track = $('ticker-track');
+  if (!spreads || Object.keys(spreads).length === 0) return;
+  const items = Object.entries(spreads).map(([ex, d]) =>
+    `<div class="ticker-item"><span class="ex">${ex}</span><span class="pr">$${formatNum(d.price, 2)}</span><span style="color:${d.diff_usd >= 0 ? 'var(--emerald)' : 'var(--coral)'}">${d.diff_usd >= 0 ? '+' : ''}${d.diff_usd.toFixed(2)}</span></div>`
+  ).join('');
+  track.innerHTML = items + items + items + items;
+}
+
+/* ═══ SPREAD TABLE ═══ */
+function updateSpreads(spreads) {
+  const tbody = $('spread-table').querySelector('tbody');
+  tbody.innerHTML = '';
+  for (const [ex, d] of Object.entries(spreads)) {
+    const diffColor = d.diff_usd >= 0 ? 'var(--emerald)' : 'var(--coral)';
+    const sign = d.diff_usd >= 0 ? '+' : '';
+    tbody.innerHTML += `<tr>
+      <td class="ex-name">${ex}</td>
+      <td>$${formatNum(d.price, 2)}</td>
+      <td style="color:${diffColor}">${sign}${d.diff_usd.toFixed(2)}</td>
+      <td style="color:${diffColor}">${sign}${d.diff_pct.toFixed(4)}%</td>
+    </tr>`;
+  }
+}
+
+/* ═══ FUNDING TABLE ═══ */
+function updateFunding(funding) {
+  const tbody = $('funding-table').querySelector('tbody');
+  tbody.innerHTML = '';
+  for (const [ex, d] of Object.entries(funding)) {
+    const rateColor = d.annualized > 10 ? 'var(--amber)' : d.annualized > 0 ? 'var(--emerald)' : 'var(--coral)';
+    tbody.innerHTML += `<tr>
+      <td class="ex-name">${ex.charAt(0).toUpperCase() + ex.slice(1)}</td>
+      <td>${(d.rate_8h * 100).toFixed(4)}%</td>
+      <td style="color:${rateColor}">${d.annualized > 0 ? '+' : ''}${d.annualized.toFixed(2)}%</td>
+    </tr>`;
+  }
+  const avg = Object.values(funding).reduce((s, f) => s + f.annualized, 0) / Math.max(Object.keys(funding).length, 1);
+  $('funding-footer').textContent = `Avg annualized: ${avg > 0 ? '+' : ''}${avg.toFixed(2)}%`;
+}
+
+/* ═══ SIGNALS ═══ */
+function updateSignals(signals) {
+  const body = $('signals-body');
+  body.innerHTML = '';
+  signals.forEach(sig => {
+    const pillClass = sig.color === 'green' ? 'pill-green' : sig.color === 'amber' ? 'pill-amber' : 'pill-red';
+    body.innerHTML += `<div class="signal-row">
+      <span class="signal-name">${sig.name}</span>
+      <div class="signal-meta">
+        <span class="signal-value">${sig.value}</span>
+        <span class="signal-pill ${pillClass}">${sig.rating}</span>
+      </div>
+    </div>`;
+  });
+}
+
+/* ═══ FNG BAR ═══ */
+function updateFngBar(val) {
+  const bar = $('fng-bar');
+  bar.style.width = val + '%';
+  if (val < 25) bar.style.background = 'linear-gradient(90deg, var(--coral), #ff6b6b)';
+  else if (val < 45) bar.style.background = 'linear-gradient(90deg, var(--amber), #fbbf24)';
+  else if (val < 55) bar.style.background = 'linear-gradient(90deg, var(--t3), var(--t2))';
+  else if (val < 75) bar.style.background = 'linear-gradient(90deg, #22c55e, var(--emerald))';
+  else bar.style.background = 'linear-gradient(90deg, var(--emerald), #34d399)';
+}
+
+/* ═══ CHANGE PILL ═══ */
+function changeHTML(val) {
+  if (val == null || isNaN(val)) return '—';
+  const sign = val >= 0 ? '+' : '';
+  const cls = val >= 0 ? 'change-up' : 'change-down';
+  return `<span class="${cls}">${sign}${val.toFixed(2)}% 24h</span>`;
+}
+
+/* ═══ POLLING ═══ */
+let failCount = 0;
+
+async function poll() {
   try {
-    const r = await fetch('/status', {cache:'no-store'});
-    if (!r.ok) throw new Error(r.status);
-    const d = await r.json();
+    const res = await fetch('/status');
+    if (!res.ok) throw new Error('Bad response');
+    const d = await res.json();
     failCount = 0;
     $('banner').style.display = 'none';
-    document.querySelector('.live-dot').style.background = 'var(--green)';
-    document.querySelector('.live-dot').style.boxShadow = '0 0 8px rgba(34,197,94,0.4)';
-    update(d);
-  } catch(e) {
-    if (++failCount >= 3) {
+
+    // Header pills
+    $('h-btc-val').textContent = '$' + formatNum(d.btc.price, 0);
+    $('h-eth-val').textContent = '$' + formatNum(d.eth.price, 0);
+    $('h-fng-val').textContent = d.fng.value + '/100';
+
+    // KPIs
+    animateNum($('btc-price'), d.btc.price, { prefix: '$', decimals: 2 });
+    $('btc-change').innerHTML = changeHTML(d.btc.change_24h);
+
+    animateNum($('eth-price'), d.eth.price, { prefix: '$', decimals: 2 });
+    $('eth-change').innerHTML = changeHTML(d.eth.change_24h);
+
+    animateNum($('fng-value'), d.fng.value, { prefix: '', decimals: 0 });
+    $('fng-label').textContent = d.fng.label;
+    updateFngBar(d.fng.value);
+
+    animateNum($('btc-dom'), d.market.btc_dominance, { suffix: '%', decimals: 1 });
+    animateNum($('global-mcap'), d.market.global_mcap_t, { prefix: '$', suffix: 'T', decimals: 2 });
+
+    // Spreads
+    updateSpreads(d.btc.spreads);
+    $('spread-footer').textContent = `Max spread: $${d.btc.max_spread_usd} (${d.btc.max_spread_pct.toFixed(4)}%) | Efficiency: ${d.btc.efficiency.toFixed(3)}%`;
+    $('spread-updated').textContent = new Date(d.ts * 1000).toLocaleTimeString('en-US', { hour12: false });
+
+    // Funding
+    updateFunding(d.funding);
+
+    // Chart
+    const timeLabel = new Date(d.ts * 1000).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+    spreadHistory.labels.push(timeLabel);
+    spreadHistory.data.push(d.btc.max_spread_pct);
+    if (spreadHistory.labels.length > 60) {
+      spreadHistory.labels.shift();
+      spreadHistory.data.shift();
+    }
+    spreadChart.update('none');
+
+    // Ticker
+    buildTicker(d.btc.spreads);
+
+    // Signals
+    updateSignals(d.signals);
+
+  } catch (e) {
+    failCount++;
+    if (failCount >= 3) {
       $('banner').style.display = 'block';
-      document.querySelector('.live-dot').style.background = 'var(--red)';
-      document.querySelector('.live-dot').style.boxShadow = '0 0 8px rgba(239,68,68,0.4)';
     }
   }
 }
 
-function update(d) {
-  const btc = d.btc || {};
-  const eth = d.eth || {};
-  const funding = d.funding || {};
-  const market = d.market || {};
-  const fng = d.fng || {};
-
-  // Header
-  const btcP = btc.price || 0;
-  const ethP = eth.price || 0;
-  if (btcP !== prevBtc) { $('h-btc').textContent = '$'+fmt(btcP); $('h-btc').classList.add('flash'); setTimeout(()=>$('h-btc').classList.remove('flash'),500); prevBtc=btcP; }
-  if (ethP !== prevEth) { $('h-eth').textContent = '$'+fmt(ethP); prevEth=ethP; }
-  $('h-fng').textContent = fng.value || '—';
-  $('h-fng').className = 'val ' + (fng.value < 40 ? 'negative' : fng.value > 60 ? 'positive' : 'neutral');
-
-  // Stat cards
-  $('btc-price').textContent = '$'+fmt(btcP);
-  const b24 = btc.change_24h || 0;
-  $('btc-change').textContent = '24h: '+fmtP(b24);
-  $('btc-change').className = 'stat-sub '+(b24>=0?'positive':'negative');
-
-  $('eth-price').textContent = '$'+fmt(ethP);
-  const e24 = eth.change_24h || 0;
-  $('eth-change').textContent = '24h: '+fmtP(e24);
-  $('eth-change').className = 'stat-sub '+(e24>=0?'positive':'negative');
-
-  const fv = fng.value || 50;
-  $('fng-value').textContent = fv;
-  $('fng-value').className = 'stat-value '+(fv<40?'negative':fv>60?'positive':'neutral');
-  $('fng-label').textContent = fng.label || '—';
-
-  $('btc-dom').textContent = (market.btc_dominance||0).toFixed(1)+'%';
-  $('global-mcap').textContent = '$'+(market.global_mcap_t||0).toFixed(2)+'T';
-
-  // Spread table
-  const spreads = btc.spreads || {};
-  const exOrder = ['BINANCE','COINBASE','KRAKEN','OKX'];
-  let rows = '';
-  for (const ex of exOrder) {
-    const s = spreads[ex];
-    if (!s) continue;
-    const isRef = ex === 'BINANCE';
-    const diff = s.diff_usd || 0;
-    const cls = isRef ? 'ex-ref' : diff > 0 ? 'ex-premium' : diff < 0 ? 'ex-discount' : '';
-    const status = isRef ? 'Reference' : diff > 0.5 ? 'Premium' : diff < -0.5 ? 'Discount' : 'Parity';
-    rows += `<tr class="${cls}">
-      <td>${ex.charAt(0)+ex.slice(1).toLowerCase()}${isRef?' ·':''}${isRef?' ref':''}</td>
-      <td>$${fmt(s.price)}</td>
-      <td>${isRef?'—':(diff>=0?'+':'')+fmt(diff,2)}</td>
-      <td>${isRef?'—':(s.diff_pct>=0?'+':'')+s.diff_pct.toFixed(4)+'%'}</td>
-      <td>${status}</td>
-    </tr>`;
-  }
-  $('spread-table').innerHTML = rows;
-  $('spread-footer').textContent = `Max spread: $${fmt(btc.max_spread_usd,2)}  ·  Efficiency: ${(btc.efficiency||100).toFixed(3)}%`;
-  $('spread-updated').textContent = 'Updated just now';
-
-  // Funding table
-  const fnames = {binance:'Binance',bybit:'Bybit'};
-  let frows = '';
-  for (const [key,label] of Object.entries(fnames)) {
-    const f = funding[key];
-    if (!f) continue;
-    const ann = f.annualized || 0;
-    const sig = ann > 15 ? 'Longs Crowded' : ann > 8 ? 'Elevated' : ann > 0 ? 'Normal' : 'Negative';
-    const cls = ann > 8 ? 'amber' : ann > 0 ? 'positive' : 'negative';
-    frows += `<tr>
-      <td>${label}</td>
-      <td>${f.rate_8h>=0?'+':''}${(f.rate_8h*100).toFixed(4)}%</td>
-      <td class="${cls}">${ann>=0?'+':''}${ann.toFixed(1)}%</td>
-      <td class="${cls}">${sig}</td>
-    </tr>`;
-  }
-  $('funding-table').innerHTML = frows || '<tr><td colspan="4" style="color:var(--text-3);padding:12px 20px">Loading...</td></tr>';
-
-  const fVals = Object.values(funding).map(f=>f.annualized||0);
-  const avgF = fVals.length ? fVals.reduce((a,b)=>a+b,0)/fVals.length : 0;
-  $('funding-footer').textContent = `Consensus: ${avgF>8?'Long-heavy':avgF>0?'Slightly long':'Balanced'}  ·  Avg: ${avgF>=0?'+':''}${avgF.toFixed(1)}% ann`;
-
-  // Chart update
-  const now = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  spreadData.shift(); spreadData.push(btc.max_spread_pct || 0);
-  spreadLabels.shift(); spreadLabels.push(now);
-  chart.data.datasets[0].data = [...spreadData];
-  chart.data.labels = [...spreadLabels];
-  chart.update('none');
-
-  // Signals
-  const signals = d.signals || [];
-  $('signals-body').innerHTML = signals.map(s => `
-    <div class="signal-row">
-      <span class="signal-name">${s.name}</span>
-      <span class="signal-value ${s.color==='green'?'positive':s.color==='red'?'negative':'neutral'}">${s.value}</span>
-      <span class="signal-badge badge-${s.color}">${s.rating}</span>
-    </div>`).join('');
-}
-
-// Animate in
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.card').forEach((el,i) => {
-    setTimeout(() => el.classList.add('visible'), 80 + i * 60);
-  });
-  fetchStatus();
-  setInterval(fetchStatus, 5000);
-});
+poll();
+setInterval(poll, 5000);
 </script>
 </body>
 </html>
